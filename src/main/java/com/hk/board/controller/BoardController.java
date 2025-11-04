@@ -58,7 +58,7 @@ public class BoardController {
 		//pcount 넘겨주기
 		model.addAttribute("pcount", pcount);
 		
-		return "board/boardList?pNum="+pNum;// forward 기능, "redirect:board/boardList"
+		return "board/boardList";// forward 기능, "redirect:board/boardList"
 	}
 	
 	@GetMapping(value = "/boardInsert")
@@ -140,7 +140,7 @@ public class BoardController {
 			System.out.println("최소하나 체크하기");
 			List<BoardDto> list=boardService.getAllList();
 			model.addAttribute("list", list);
-			return "board/boardlist";
+			return "board/boardList?pNum="+pNum;
 		}
 		boardService.mulDel(delBoardCommand.getSeq());
 		System.out.println("글삭제함");

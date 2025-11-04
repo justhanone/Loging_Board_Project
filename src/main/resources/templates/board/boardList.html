@@ -30,6 +30,7 @@
 <h1>게시판 목록</h1>
 <form action="/board/mulDel" method="post" th:object="${delBoardCommand}">
 	<input type="hidden" name="pNum" th:value="${paging.pNum}">
+	
 	<table class="table">
 		<tr>
 			<th><input type="checkbox" name="all" 
