@@ -134,17 +134,17 @@ public class BoardController {
 	@RequestMapping(value="mulDel",method = {RequestMethod.POST,RequestMethod.GET})
 	public String mulDel(@Validated DelBoardCommand delBoardCommand
 						 ,BindingResult result
-			             ,Model model
-			             ,@RequestParam("pNum") String pNum) {
+			             ,Model model) {
 		if(result.hasErrors()) {
 			System.out.println("최소하나 체크하기");
 			List<BoardDto> list=boardService.getAllList();
 			model.addAttribute("list", list);
-			return "board/boardList?pNum="+pNum;
+			return "board/boardList";
 		}
+		
 		boardService.mulDel(delBoardCommand.getSeq());
 		System.out.println("글삭제함");
-		return "redirect:/board/boardList?pNum="+pNum;
+		return "redirect:/board/boardList";
 	}
 }
 

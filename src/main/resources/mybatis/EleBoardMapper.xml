@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.hk.board.mapper.EleBoardMapper">
+
+	<resultMap type="EleBoardDto" id="eleBoardDtoMap" >
+		<id property="ele_seq"		column="ELE_SEQ" />
+		<result property="id"		column="ID" />
+		<result property="title"	column="TITLE" />
+		<result property="content"	column="CONTENT" />
+		<result property="regdate"	column="REGDATE" />
+		<collection property="elefileBoardDto" resultMap="elefileBoardDtoMap"></collection>
+	</resultMap>
+	
+	<resultMap type="EleFileDto" id="eleFileDtoMap" >
+		<id property="elefile_seq"				column="ELEFILE_SEQ" />
+		<result property="ele_seq"				column="ELE_SEQ" />
+		<result property="ele_origin_filename"	column="ELE_ORIGIN_FILENAME" />
+		<result property="ele_stored_filename"	column="ELE_STORED_FILENAME" />
+	</resultMap>
+
+	<select id="getAllList" resultType="EleBoardDto">
+		SELECT ELE_SEQ, ID, TITLE, CONTENT, REGDATE
+		FROM ELEBOARD
+		WHERE DELFLAG = 'N'
+		ORDER BY REGDATE DESC
+	</select>
+	
+	<!-- 페이징 위한 pcout 구하기 -->
+	<select id="getPcount" resultType="int">
+  		SELECT CEIL(COUNT(*)/10)
+		FROM ELEBOARD
+		WHERE DELFLAG = 'N'
+  	</select>
+  	
+  	<!-- getboardlist == offset을 파라미터로 받음  -->
+  	<select id="getBoardList" parameterType="int" resultType="EleBoardDto">
+  		SELECT ELE_SEQ, ID, TITLE, CONTENT, REGDATE, DELFLAG
+		FROM ELEBOARD
+		WHERE DELFLAG = 'N'
+		ORDER BY ELE_SEQ DESC
+		LIMIT ${offset}, 10  <!-- 10개씩 가져오기 (pcount 쿼리와 일치시킴) -->
+  	</select>
+	
+	<select id="getBoard" parameterType="Integer" resultMap="eleBoardDtoMap">
+		SELECT B.ELE_SEQ, B.ID, B.TITLE, B.CONTENT, B.REGDATE
+      	,F.ELEFILE_SEQ, F.ELE_ORIGIN_FILENAME, F.ELE_STORED_FILENAME
+		FROM ELEBOARD B LEFT OUTER JOIN ELEFILEINFO F
+		ON B.ELE_SEQ = F.ELE_SEQ
+		WHERE B.ELE_SEQ = #{ele_seq}
+	</select>
+	
+<!-- 	useGeneratedKeys="true" keyProperty="ELE_SEQ"
+        : 증가된 ELE_SEQ값을 BoardDto에 전달 : insertBoard(boardDto) -->
+	<insert id="insertBoard" parameterType="EleBoardDto"
+		useGeneratedKeys="true" keyProperty="ele_seq">
+		INSERT INTO ELEBOARD
+		VALUES(NULL,#{id},#{title},#{content},CURDATE(),'N')
+	</insert>
+	
+	<update id="updateBoard" parameterType="EleBoardDto">
+		UPDATE ELEBOARD
+		SET TITLE=#{title}, CONTENT=#{content}
+		WHERE ELE_SEQ=#{ele_seq}
+	</update>
+	
+	<update id="mulDel" parameterType="Map">
+		UPDATE ELEBOARD SET DELFLAG = 'Y' WHERE ELE_SEQ IN
+		<foreach collection="seqs" item="ele_seq" open="(" close=")"
+		         separator=",">
+			#{ele_seq}
+		</foreach>
+	</update>
+</mapper>

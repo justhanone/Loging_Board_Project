@@ -9,10 +9,14 @@ public class InsertBoardCommand {
 	private String title;
 	@NotBlank(message = "내용을 입력하세요")
 	private String content;
+	
+	
 	public InsertBoardCommand() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 	public InsertBoardCommand(String id, @NotBlank(message = "제목을 입력하세요") String title,
 			@NotBlank(message = "내용을 입력하세요") String content) {
 		super();

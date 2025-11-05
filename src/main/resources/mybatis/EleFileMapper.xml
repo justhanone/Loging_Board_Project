@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.board.mapper.EleFileMapper">
+	
+	<insert id="insertEleFileBoard" parameterType="EleFileDto">
+		INSERT INTO ELEFILEINFO (ele_seq, ele_origin_filename, ele_stored_filename)
+		VALUES (#{ele_seq}, #{ele_origin_filename}, #{ele_stored_filename})
+	</insert>
+	
+	<select id="getEleFileInfo" parameterType="int" resultType="EleFileDto">
+		SELECT elefile_seq, ele_seq, ele_origin_filename, ele_stored_filename
+		FROM ELEFILEINFO
+		WHERE elefile_seq = #{elefile_seq}
+	</select>	
+</mapper>
+
+
+<!-- 
+<insert id="insertFileBoard" parameterType="fileBoardDto">
+		INSERT INTO FILEINFO
+		VALUES(NULL,#{board_seq},#{origin_filename},#{stored_filename})
+</insert>
+
+NULL의 의미: AUTO_INCREMENT가 설정된 PK 컬럼(file_seq)에 NULL을 넣으면, MySQL이 "아, NULL을 넣었네. 내가 대신 다음 번호를 생성해 줘야겠다"라고 판단하여 자동으로 번호를 채워 넣습니다.
+🚨 치명적인 위험: 만약, 내일 누군가가 FILEINFO 테이블의 3번째 위치에 file_size라는 새 컬럼을 추가하면 어떻게 될까요?
+INSERT ... VALUES(NULL, 10, 'a.jpg', 'b.jpg')
+이 쿼리는 file_size 컬럼에 'a.jpg'를, origin_filename 컬럼에 'b.jpg'를 넣으려고 시도합니다. (데이터 타입이 안 맞으면 오류, 맞으면 데이터가 엉망진창이 됩니다.)
+
+
+<insert id="insertEleFileBoard" ...>
+    INSERT INTO elefileinfo (ele_seq, ele_origin_filename, ele_stored_filename)
+    VALUES (#{ele_seq}, #{ele_origin_filename}, #{ele_stored_filename})
+</insert>
+작동 원리: 이 쿼리는 DB에게 정확하게 "내가 어떤 컬럼에 값을 넣을지" 알려줍니다.
+(ele_seq, ele_origin_filename, ele_stored_filename): "나는 지금부터 이 3개의 컬럼에만 값을 넣겠다."
+AUTO_INCREMENT 처리 (핵심): elefileinfo 테이블의 PK인 elefile_seq 컬럼이 아예 생략되었습니다.
+DB는 AUTO_INCREMENT가 설정된 PK 컬럼이 INSERT 문에서 생략된 것을 보고, "아, elefile_seq는 내가 알아서 자동으로 채워 넣어야겠다"라고 판단하여 자동으로 번호를 채워 넣습니다.
+
+
+ -->

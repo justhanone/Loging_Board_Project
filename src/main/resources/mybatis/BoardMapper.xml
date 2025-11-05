@@ -32,12 +32,14 @@
 	<select id="getPcount" resultType="int">
   		SELECT CEIL(COUNT(*)/10)
 		FROM TESTBOARD
+		WHERE DELFLAG = 'N' <!-- 지우지 않은건 없애기(수정)==이거 있어서 버그 뜰지도 -->
   	</select>
   	
   	<!-- getboardlist == offset을 파라미터로 받음  -->
   	<select id="getBoardList" parameterType="int" resultType="boardDto">
   		SELECT BOARD_SEQ, ID, TITLE, CONTENT, REGDATE, DELFLAG
 		FROM TESTBOARD
+		WHERE DELFLAG = 'N' <!-- 지우지 않은건 없애기(수정)==이거 있어서 버그 뜰지도 -->
 		ORDER BY board_seq DESC
 		LIMIT ${offset}, 10  <!-- 10개씩 가져오기 (pcount 쿼리와 일치시킴) -->
   	</select>
