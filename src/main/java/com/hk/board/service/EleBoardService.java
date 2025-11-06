@@ -1,5 +1,6 @@
 package com.hk.board.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.hk.board.dtos.EleBoardDto;
+import com.hk.board.dtos.EleFileDto;
 import com.hk.board.elecommand.InsertEleBoardCommand;
 import com.hk.board.mapper.EleBoardMapper;
 import com.hk.board.mapper.EleFileMapper;
@@ -75,12 +77,12 @@ public class EleBoardService {
 			// FileService.uploadFiles는 EleFileDto를 반환하도록 수정되었거나,
 			// FileBoardDto를 반환한다면 EleFileDto로 변환하는 과정이 필요합니다.
 			// (여기서는 FileService가 EleFileDto를 반환한다고 가정)
-			List<EleFileDto> uploadFileList = fileService.uploadFiles(filepath, multipartRequest);
+			List<EleFileDto> uploadFileList = elefileService.uploadFiles(filepath, multipartRequest);
 			
 			// [수정] 파일 정보를 elefileinfo 테이블에 저장
 			for (EleFileDto fDto : uploadFileList) {
 				// [수정] EleFileMapper의 insert 메서드 호출 (새로 만들어야 함)
-				eleFileMapper.insertEleFileBoard(
+				elefileMapper.insertEleFileBoard(
 				 new EleFileDto(0, eleBoardDto.getEle_seq(), // [수정] 증가된 ele_seq 값 사용
 						             fDto.getEle_origin_filename(),
 						 			 fDto.getEle_stored_filename())

@@ -12,7 +12,6 @@ import com.hk.board.mapper.MemberMapper;
 import com.hk.board.status.RoleStatus;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 
 //@RequiredArgsConstructor ;lombok 기능: final 필드를 초기화 - Autowired 생략가능
 @Service
