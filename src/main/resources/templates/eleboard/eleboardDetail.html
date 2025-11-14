@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript">
+	function updateEX() {
+		if(confirm("수정하시겠습니까?")) {
+			return true;
+		}
+		
+		return false;
+	}
+</script>
+</head>
+
+
+
+<body>
+	<div layout:fragment="content">
+		<div id="container">
+			<h1>상세보기</h1>
+			<form action="/eleboard/eleboardUpdate" method="post" onsubmit="return updateEX()"
+							th:object="${updateEleBoardCommand}">
+				<input type="hidden" name="ele_seq" th:value="${dto.ele_seq}" />
+				<table class="table">
+					<tr>
+						<th>작성자[ID]</th>
+						<td th:text="${dto.id}"></td>
+					</tr>
+					
+					<tr>
+						<th>제목</th>
+						<td>
+							<input type="text" name="title" th:value="${dto.title}" class="form-control"
+									th:readonly="${session.mdto.id!=dto.id}"/>
+							<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errorField"></span>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>파일 [[${#lists.size(dto.elefileBoardDto)}]]</th>
+						<th:block th:if="${dto.elefileBoardDto[0].ele_origin_filename==null}">
+							<td>첨부 파일 없음</td>
+						</th:block>
+						
+						<th:block th:unless="${dto.elefileBoardDto[0].ele_origin_filename==null}" >
+							<td>
+								<th:block th:each="fdto:${dto.elefileBoardDto}">
+									<span class="glyphicon glyphicon-folder-open"></span>
+									<a th:text="${fdto.ele_origin_filename}"
+										th:href="@{/eleboard/eledownload(elefile_seq=${fdto.elefile_seq})}"></a>&nbsp;&nbsp;
+								</th:block>
+							</td>
+						</th:block>
+					</tr>
+					
+					<tr>
+						<th>내용</th>
+						<td>
+							<textarea rows="10" cols="60" name="content"
+										th:text="${dto.content}"
+										class="form-control"
+										th:readonly="${session.mdto.id!=dto.id}"></textarea>
+							<span th:if="${#fields.hasErrors('content')}"
+									th:errors="*{content}" class="errorFields"></span>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<th:block th:if="${session.mdto.id==dto.id}">
+								<button type="submit" class="btn">수정</button>
+							</th:block>
+							
+							<button type="button" class="btn" th:if="${session.mdto.role=='ADMIN' || session.mdto.id==dto.id}"
+								th:onclick="|location.href='@{/eleboard/mulDel(ele_seq=$(dto.ele_seq))}'|">삭제</button>
+							<button type="button" class="btn"
+								th:onclick="|location.href='@{/eleboard/eleboardList}'|">목록</button>
+						</td>
+					</tr>
+				</table>				
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+

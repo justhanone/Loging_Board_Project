@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div id="container">
+		<h1>일정 추가하기</h1>
+		<form th:action="@{/schedule/addcalboard}" method="post"
+		      th:object="${insertCalCommand}">
+			<table class="table">
+				<tr>
+					<th>아이디</th>
+					<td>
+						<input th:value="${session.mdto.id}" 
+						       type="text" 
+						       name="id" 
+						       class="form-control"
+						       readonly />
+						<span th:if="${#fields.hasErrors('id')}"
+						      th:errors="*{id}"
+						      class="errorField"></span>
+					</td>
+				</tr>
+				<tr>
+					<th>일정</th>
+					<td>
+					  <div class="d-flex align-items-center flex-wrap gap-2">
+					    <select name="year" class="form-select w-auto">
+					      <th:block th:each="i:${#numbers.sequence(insertCalCommand.year-5, insertCalCommand.year+5)}">
+					        <option th:value="${i}" th:text="${i}" th:selected="${insertCalCommand.year==i}"></option>
+					      </th:block>
+					    </select>
+					    <span>년</span>
+					
+					    <select name="month" class="form-select w-auto">
+					      <th:block th:each="i:${#numbers.sequence(1,12)}">
+					        <option th:value="${i}" th:text="${i}" th:selected="${insertCalCommand.month==i}"></option>
+					      </th:block>
+					    </select>
+					    <span>월</span>
+					
+					    <select name="date" class="form-select w-auto">
+					      <th:block th:each="i:${#numbers.sequence(1,31)}">
+					        <option th:value="${i}" th:text="${i}" th:selected="${insertCalCommand.date==i}"></option>
+					      </th:block>
+					    </select>
+					    <span>일</span>
+					
+					    <select name="hour" class="form-select w-auto">
+					      <th:block th:each="i:${#numbers.sequence(0,23)}">
+					        <option th:value="${i}" th:text="${i}"
+					                th:selected="${i==#temporals.hour(now)}"></option>
+					      </th:block>
+					    </select>
+					    <span>시</span>
+					
+					    <select name="min" class="form-select w-auto">
+					      <th:block th:each="i:${#numbers.sequence(0,59)}">
+					        <option th:value="${i}" th:text="${i}"
+					                th:selected="${i==#temporals.minute(now)}"></option>
+					      </th:block>
+					    </select>
+					    <span>분</span>
+					  </div>
+					</td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td>
+						<input th:field="*{title}" 
+						       type="text" 
+						       name="title" 
+						       class="form-control"/>
+						<span th:if="${#fields.hasErrors('title')}"
+						      th:errors="*{title}"
+						      class="errorField"></span>
+					</td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td>
+						<textarea rows="10" cols="60"
+								  th:field="*{content}" 
+						          name="content" 
+						          class="form-control"></textarea>
+						<span th:if="${#fields.hasErrors('content')}"
+						      th:errors="*{content}"
+						      class="errorField"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="submit" value="일정추가" class="btn btn-primary"/>
+						<input type="button" value="달력" class="btn btn-primary"
+						       th:onclick="|location.href='@{/schedule/calendar}'|"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+</body>
+</html>

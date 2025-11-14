@@ -60,7 +60,9 @@
 			<td colspan="4">
 				<button type="button" class="btn"
 				 th:onclick="|location.href='@{/board/boardInsert}'|">글추가</button>
-				<button type="submit" class="btn">삭제</button>
+				 <th:block th:if="${session.mdto.role=='ADMIN' || session.mdto.id==dto.id}">
+					<button type="submit" class="btn">삭제</button>
+				</th:block>
 				<span th:if="${#fields.hasErrors('seq')}"
 				      th:errors="*{seq}"></span>
 			</td>

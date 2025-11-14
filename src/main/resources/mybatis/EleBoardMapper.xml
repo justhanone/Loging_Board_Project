@@ -9,7 +9,7 @@
 		<result property="title"	column="TITLE" />
 		<result property="content"	column="CONTENT" />
 		<result property="regdate"	column="REGDATE" />
-		<collection property="elefileBoardDto" resultMap="elefileBoardDtoMap"></collection>
+		<collection property="elefileBoardDto" resultMap="eleFileDtoMap"></collection>
 	</resultMap>
 	
 	<resultMap type="EleFileDto" id="eleFileDtoMap" >
@@ -64,9 +64,9 @@
 		WHERE ELE_SEQ=#{ele_seq}
 	</update>
 	
-	<update id="mulDel" parameterType="Map">
+	<update id="elemulDel">
 		UPDATE ELEBOARD SET DELFLAG = 'Y' WHERE ELE_SEQ IN
-		<foreach collection="seqs" item="ele_seq" open="(" close=")"
+		<foreach collection="array" item="ele_seq" open="(" close=")"
 		         separator=",">
 			#{ele_seq}
 		</foreach>

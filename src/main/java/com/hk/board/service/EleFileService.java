@@ -36,7 +36,7 @@ public class EleFileService {
 										throws IllegalStateException, IOException {
 		
 		//여러개의 파일들을 List에 담기.
-		List<MultipartFile> multipartFiles = multipartRequest.getFiles("filename");
+		List<MultipartFile> multipartFiles = multipartRequest.getFiles("elefilename");
 		
 		//업로드된 파일들의 정보(원본명, 저장명)을 담아줄 List 선언
 		List<EleFileDto> uploadFileList=new ArrayList<EleFileDto>();
@@ -77,7 +77,7 @@ public class EleFileService {
 		//다운로드를 위한 준비 작업
 		response.setContentType("applcation/octet-stream");
 		response.setHeader("Content-Disposition",
-	            			"attachment; fileName="
+	            			"attachment; elefileName="
 	    	            	+URLEncoder.encode(origin_filename,"UTF-8") );
 		response.setHeader("Content-transfer", "binary");
 		

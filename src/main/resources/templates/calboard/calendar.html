@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript">
+	$(
+		function() {
+	//			alert("jquery 테스트");
+		$(".d").hover(function() {
+
+			//년월일 값을 구하기
+			let aDate=$(this); //hover 이벤트가 발생된 a객체 구함
+			let year=$(".y").text().trim(); //년도 
+			let month=$(".m").text().trim(); //월
+			let date=aDate.text().trim(); //일
+			
+			//month와 date가 1자리라면(<2), 0을 붙여서 yyyyMMdd 형식을 맞춘다.
+			let yyyyMMdd=year+(month.length<2?"0"+month:month)
+							 +(date.length<2?"0"+date:date);
+			
+			$.ajax({
+				url : "/schedule/calcountajax",
+				method : "get",
+				async : false, //비동기로 실행하지 않겠다.=순서대로 실행하겠다.
+				data : {"yyyyMMdd" : yyyyMMdd},
+				dataType : "json", //서버로부터 받을 때의 데이터 타입
+				success : function(data) { //서버로부터 받는 데이터를 data 변수에 저장
+					//console.log(data);
+					aDate.after("<div class='cp'>"
+								+data.count
+								+"</div>"
+								);
+				},
+				error:function() {
+					console.log("통신 실패");
+				}
+			});
+			
+		//마우스 나갔을 때
+		}, function() {
+				$(".cp").remove();
+		});
+	});
+</script>
+
+<style type="text/css">
+	.cal #tbody > div{
+		position: relative;
+	}
+
+	.cp{
+		position: absolute;
+    	left: 20px;
+    	top:-30px;
+    	width: 40px;
+    	height: 40px;
+    	border-radius:20px 20px 20px 1px;
+    	background-color: pink;
+    	line-height: 40px;
+    	text-align: center;
+    	font-weight: bold;
+	}
+</style>
+
+</head>
+<body>
+<div layout:fragment="content">
+	<div id="container">
+		<h1>일정관리[달력보기]</h1>
+		<div class="cal">
+			<div id="ctitle">
+				<a th:href="@{/schedule/calendar(year=${calMap.year-1},month=${calMap.month})}">◁</a>
+				<a th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month-1})}">◀</a>
+				<span class="y" th:text="${calMap.year}"></span>
+				<span>년</span>
+				<span class="m" th:text="${calMap.month}"></span>
+				<span>월</span>
+				<a th:href="@{/schedule/calendar(year=${calMap.year},month=${calMap.month+1})}">▶</a>
+				<a th:href="@{/schedule/calendar(year=${calMap.year+1},month=${calMap.month})}">▷</a>
+			</div>
+			<div id="thead">
+				<div>일</div><div>월</div><div>화</div>
+				<div>수</div><div>목</div><div>금</div><div>토</div>
+			</div>
+			<div id="tbody">
+				<!-- 해당 달의 1일의 요일: 만약 월요일이라면 2라는 값 반환 -->
+				<th:block th:if="${calMap.dayOfWeek>1}">
+					<div th:each="num:${#numbers.sequence(1,calMap.dayOfWeek-1)}">&nbsp;</div>
+				</th:block>
+				<th:block th:each="i:${#numbers.sequence(1,calMap.lastDay)}">
+					<div>
+						<a th:href="@{/schedule/calboardlist(year=${calMap.year},month=${calMap.month},date=${i})}"
+						   th:text="${i}" class="d"></a>
+						   <!-- 여기에 위에서 만든 div 태그가 추가됨 -->
+						<a th:if="${session.mdto.role=='ADMIN'}"
+						th:href="@{/schedule/addcalboardform(year=${calMap.year},month=${calMap.month},date=${i})}">
+							<img class="pen" th:src="@{/img/pen.png}" alt="일정추가"/>
+						</a>
+						<!-- i값하고 clist의 날짜와 비교해서 일정 출력 -->
+						[(${@util.getCalViewList(i,clist)})]
+					</div>
+				</th:block>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

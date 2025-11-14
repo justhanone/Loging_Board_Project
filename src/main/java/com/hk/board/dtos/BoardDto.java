@@ -1,3 +1,4 @@
+//dtos는 서버에서 정보를 받아서 클라이언트로 보내는 용도
 package com.hk.board.dtos;
 
 import java.util.Date;
@@ -5,7 +6,6 @@ import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
-import lombok.Data;
 //@Data
 @Alias(value = "boardDto") //mapper.xml에서 사용하는 변수명 설정
 public class BoardDto {

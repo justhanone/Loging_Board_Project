@@ -120,6 +120,7 @@ public class BoardController {
 				+ updateBoardCommand.getBoard_seq();
 	}
 	
+	//File 다운로드
 	@GetMapping(value = "/download")
 	public void download(int file_seq, HttpServletRequest request
 			                         , HttpServletResponse response) throws UnsupportedEncodingException {

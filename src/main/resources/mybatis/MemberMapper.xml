@@ -5,7 +5,8 @@
 	
 	<insert id="addUser" parameterType="memberDto">
 		INSERT INTO MEMBER
-		VALUES(NULL,#{id},#{password},#{name},#{email},#{address},#{role})
+		<!--VALUES(NULL,#{id},#{password},#{name},#{email},#{address},#{role})-->
+		VALUES(NULL,#{id},#{password},#{name},NULL,NULL,#{role})
 	</insert>
 	
 	<select id="idChk" parameterType="String" resultType="String">
@@ -17,6 +18,16 @@
 		FROM MEMBER
 		WHERE ID = #{id}
 	</select>
+	
+	<delete id="mulDelUser" parameterType="Map">
+		DELETE
+		FROM MEMBER
+		WHERE id IN
+		<foreach collection="ids" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
 </mapper>
 
 

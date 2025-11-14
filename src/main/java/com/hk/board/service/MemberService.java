@@ -1,6 +1,7 @@
 package com.hk.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -22,6 +23,13 @@ public class MemberService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;// <-- @Bean으로 등록:SecurityConfig클래스에서..
 	
+	@Value("${myapp.admin.code}")
+    private String actualAdminCode;
+	
+	@Value("${myapp.user.code}")
+	private String actualUserCode;
+	
+	
 	//회원가입 메서드
 	public boolean addUser(AddUserCommand addUserCommand) {
 		
@@ -32,11 +40,31 @@ public class MemberService {
 		//password암호화하여 저장하자
 		mdto.setPassword(passwordEncoder.encode(addUserCommand.getPassword()));
 		
-		mdto.setEmail(addUserCommand.getEmail());
-		mdto.setAddress(addUserCommand.getAddress());
-		mdto.setRole(RoleStatus.USER+"");//등급추가
-		return memberMapper.addUser(mdto);
+//		mdto.setEmail(addUserCommand.getEmail());
+//		mdto.setAddress(addUserCommand.getAddress());
+		
+//		String ACTUAL_ADMIN_CODE = "MY_SECRET_CODE_1234"; 
+	    
+		// 3. 하드코딩된 문자열 대신, 주입받은 'actualAdminCode' 변수를 사용
+        if (actualAdminCode.equals(addUserCommand.getAddCode())) {
+            // actualAdminCode와 일치하면 ADMIN 권한 부여
+            mdto.setRole(RoleStatus.ADMIN + "");
+            
+            return memberMapper.addUser(mdto);
+        } 
+        
+        else if(actualUserCode.equals(addUserCommand.getAddCode())){
+            // actualUserCode랑 같으면 usercode 부여
+            mdto.setRole(RoleStatus.USER + "");
+            
+            return memberMapper.addUser(mdto);
+        } 
+        
+        else {
+        	return false;
+        }
 	}
+	
 	
 	public String idChk(String id) {
 		return memberMapper.idChk(id);
@@ -68,6 +96,10 @@ public class MemberService {
 		}
 		
 		return path;
+	}
+	
+	public boolean mulDelUser(String[] seq) {
+		return memberMapper.mulDelUser(seq);
 	}
 }
 

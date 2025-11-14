@@ -9,21 +9,19 @@ public class MemberDto {
 	private String id;
 	private String name;
 	private String password;
-	private String email;
-	private String address;
 	private String role;
 	public MemberDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MemberDto(int memberId, String id, String name, String password, String email, String address, String role) {
+	public MemberDto(int memberId, String id, String name, String password, String role) {
 		super();
 		this.memberId = memberId;
 		this.id = id;
 		this.name = name;
 		this.password = password;
-		this.email = email;
-		this.address = address;
+//		this.email = email;
+//		this.address = address;
 		this.role = role;
 	}
 	public int getMemberId() {
@@ -50,18 +48,18 @@ public class MemberDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+//	public String getEmail() {
+//		return email;
+//	}
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//	public String getAddress() {
+//		return address;
+//	}
+//	public void setAddress(String address) {
+//		this.address = address;
+//	}
 	public String getRole() {
 		return role;
 	}
@@ -71,7 +69,7 @@ public class MemberDto {
 	@Override
 	public String toString() {
 		return "MemberDto [memberId=" + memberId + ", id=" + id + ", name=" + name + ", password=" + password
-				+ ", email=" + email + ", address=" + address + ", role=" + role + "]";
+				+ ", role=" + role + "]";
 	}
 	
 }

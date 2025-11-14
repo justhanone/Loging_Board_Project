@@ -66,9 +66,9 @@
 		WHERE BOARD_SEQ=#{board_seq}
 	</update>
 	
-	<update id="mulDel" parameterType="Map">
+	<update id="mulDel">
 		UPDATE TESTBOARD SET DELFLAG = 'Y' WHERE BOARD_SEQ IN
-		<foreach collection="seqs" item="board_seq" open="(" close=")"
+		<foreach collection="array" item="board_seq" open="(" close=")"
 		         separator=",">
 			#{board_seq}
 		</foreach>

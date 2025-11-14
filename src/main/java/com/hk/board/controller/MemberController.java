@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hk.board.command.AddUserCommand;
 import com.hk.board.command.LoginCommand;
@@ -39,7 +40,8 @@ public class MemberController {
 	
 	@PostMapping(value = "/addUser")
 	public String addUser(@Validated AddUserCommand addUserCommand
-			             ,BindingResult result,Model model) {
+			             ,BindingResult result,Model model
+			             ,RedirectAttributes rttr) {
 		System.out.println("회원가입하기");
 		
 		if(result.hasErrors()) {
@@ -50,10 +52,11 @@ public class MemberController {
 		try {
 			memberService.addUser(addUserCommand);
 			System.out.println("회원가입 성공");
+			rttr.addFlashAttribute("msg", "회원 가입 되셨습니다.");
 			return "redirect:/";
 		} catch (Exception e) {
 			System.out.println("회원가입실패");
-			e.printStackTrace();
+			rttr.addFlashAttribute("msg", "회원 가입에 실패하셨습니다.");
 			return "redirect:addUser";
 		}
 

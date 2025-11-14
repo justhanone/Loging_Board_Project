@@ -23,7 +23,7 @@ public interface EleBoardMapper {
 	//글 수정
 	public boolean updateBoard(EleBoardDto dto);
 	//글 삭제
-	public boolean mulDel(Map<String, String[]> map);
+	public boolean elemulDel(String[] seqs);
 }
 
 

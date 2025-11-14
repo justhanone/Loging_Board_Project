@@ -13,6 +13,8 @@ public interface MemberMapper {
 	
 	public MemberDto loginUser(String id);
 	
+	public boolean mulDelUser(String[] seq);
+	
 }
 
 

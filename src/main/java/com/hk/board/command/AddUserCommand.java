@@ -1,3 +1,4 @@
+//command는 사용자한테 입력 받아서 서버로 보내는 역할
 package com.hk.board.command;
 
 import org.hibernate.validator.constraints.Length;
@@ -16,26 +17,40 @@ public class AddUserCommand {
 	@Length(min = 8 , max = 16, message = "8자리이상, 16자이하로 입력하세요")
 	private String password;
 	
-	@NotBlank(message = "이메일 입력하세요")
-	private String email;
+	@NotBlank(message = "가입 코드를 입력하세요")
+	private String addCode;
 	
-	@NotBlank(message = "주소를 입력하세요")
-	private String address;
+//	@NotBlank(message = "이메일 입력하세요")
+//	private String email;
+//	
+//	@NotBlank(message = "주소를 입력하세요")
+//	private String address;
+
+
 
 	public AddUserCommand() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public String getAddCode() {
+		return addCode;
+	}
+
+	public void setAddCode(String addCode) {
+		this.addCode = addCode;
+	}
+
 	public AddUserCommand(@NotBlank(message = "아이디를 입력하세요") String id, @NotBlank(message = "이름을 입력하세요") String name,
-			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password,
-			@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address) {
-		super();
+			@NotBlank(message = "비밀번호를 입력하세요") @Length(min = 8, max = 16, message = "8자리이상, 16자이하로 입력하세요") String password
+			) {
+//		@NotBlank(message = "이메일 입력하세요") String email, @NotBlank(message = "주소를 입력하세요") String address
+//		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
-		this.email = email;
-		this.address = address;
+//		this.email = email;
+//		this.address = address;
 	}
 
 	public String getId() {
@@ -62,26 +77,28 @@ public class AddUserCommand {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
+//	public String getEmail() {
+//		return email;
+//	}
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//
+//	public String getAddress() {
+//		return address;
+//	}
+//
+//	public void setAddress(String address) {
+//		this.address = address;
+//	}
 
 	@Override
 	public String toString() {
-		return "AddUserCommand [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
-				+ ", address=" + address + "]";
+//		return "AddUserCommand [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
+//				+ ", address=" + address + "]";
+		return "AddUserCommand [id=" + id + ", name=" + name + ", password=" + password + "]";
+		
 	}
 	
 	

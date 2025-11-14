@@ -27,3 +27,44 @@
 	color : red;
 }	
 
+
+
+
+/*달력 폼*/
+#ctitle {
+	text-align: center;
+	font-size: 20px;
+}
+
+.cal #thead > div {
+	text-align: center;
+}
+
+.cal #tbody > div{
+	height: 120px;
+	vertical-align: top;
+	border-top:1px solid gray;
+/* 	position: relative; */
+}
+/* 달력 내부에 div 박스들을 인라인요소처럼 옆으로 나열시키려고 설정*/
+.cal #thead > div, .cal #tbody > div{
+	display: inline-block; width: 140px;
+}
+.cal {width:1100px;}
+
+.pen{
+	width: 20px;
+	height: 20px;
+}
+
+/* 유효값처리 에러 폰트색설정 */
+.errorField{
+	color:red;
+}
+
+#tbody div > p{
+	background-color: orange;
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}

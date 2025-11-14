@@ -7,10 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartRequest;
-
+import com.hk.board.command.UpdateBoardCommand;
 import com.hk.board.dtos.EleBoardDto;
 import com.hk.board.dtos.EleFileDto;
 import com.hk.board.elecommand.InsertEleBoardCommand;
+import com.hk.board.elecommand.UpdateEleBoardCommand;
 import com.hk.board.mapper.EleBoardMapper;
 import com.hk.board.mapper.EleFileMapper;
 import com.hk.board.util.Paging;
@@ -68,8 +69,10 @@ public class EleBoardService {
 		eleBoardDto.setContent(insertEleBoardCommand.getContent());
 	
 		eleboardMapper.insertBoard(eleBoardDto);
+		System.out.println("파일첨부여부:"
+				+(!multipartRequest.getFiles("elefilename").get(0).isEmpty()));
 		
-		if(!multipartRequest.getFiles("filename").get(0).isEmpty()) {
+		if(!multipartRequest.getFiles("elefilename").get(0).isEmpty()) {
 			String filepath = System.getProperty("user.dir") + "/upload/";
 			File dir = new File(filepath);
 			if (!dir.exists()) dir.mkdirs();
@@ -90,6 +93,32 @@ public class EleBoardService {
 			}
 		}
 		
+	}
+	
+	
+	//상세 내용 조회
+	public EleBoardDto eleboardDetail(int ele_seq) {
+		return eleboardMapper.getBoard(ele_seq);
+	}
+	
+	
+	//수정하기
+	public boolean updateEleBoard(UpdateEleBoardCommand updateEleBoardCommand) {
+		
+		//command:UI ---> DTO:DB
+		EleBoardDto dto = new EleBoardDto();
+		
+		dto.setEle_seq(updateEleBoardCommand.getEle_seq());
+		dto.setTitle(updateEleBoardCommand.getTitle());
+		dto.setContent(updateEleBoardCommand.getContent());
+		
+		return eleboardMapper.updateBoard(dto);
+	}
+	
+	
+	//삭제하기
+	public boolean elemulDel(String[] ele_seq) {
+		return eleboardMapper.elemulDel(ele_seq);
 	}
 }
 
